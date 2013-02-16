@@ -1,4 +1,8 @@
 #########################
+use strict;
+use warnings;
+use Capture::Tiny qw(capture_stderr capture_stdout);
+use IO::Scalar;
 use Test::More tests => 13;
 use D64::Disk::Dir;
 use D64::Disk::Image qw(:all);
@@ -106,13 +110,7 @@ free_test_image($d64, $filename);
 #########################
 {
 my ($d64, $entryObj, $filename) = create_test_image();
-my $warning_message;
-open FH, '>', \$warning_message;
-*BACKUP = *STDERR;
-*STDERR = *FH;
-my $side_track = $entryObj->get_side_track();
-close FH;
-*STDERR = *BACKUP;
+my $warning_message = capture_stderr { $entryObj->get_side_track(); };
 like($warning_message, qr/not a REL file/, 'get_side_track - getting first side-sector block for non-relative file');
 free_test_image($d64, $filename);
 }
@@ -126,23 +124,16 @@ free_test_image($d64, $filename);
 #########################
 {
 my ($d64, $entryObj, $filename) = create_test_image();
-my $entry_content;
-open my $fh, '>', \$entry_content;
+my $fh = new IO::Scalar;
 $entryObj->print_entry($fh);
-close $fh;
+my $entry_content = ${$fh->sref};
 like($entry_content, qr/^1.*"1".*prg.*$/, 'print_entry - printing out directory entry details to opened handle');
 free_test_image($d64, $filename);
 }
 #########################
 {
 my ($d64, $entryObj, $filename) = create_test_image();
-my $entry_content;
-open FH, '>', \$entry_content;
-*BACKUP = *STDOUT;
-*STDOUT = *FH;
-$entryObj->print_entry();
-close FH;
-*STDOUT = *BACKUP;
+my $entry_content = capture_stdout { $entryObj->print_entry(); };
 like($entry_content, qr/^1.*"1".*prg.*$/, 'print_entry - printing out directory entry details to standard output');
 free_test_image($d64, $filename);
 }

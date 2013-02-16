@@ -6,13 +6,13 @@ D64-Disk-Dir
 PREREQUISITES
 -------------
 
-    `Array::Iterator` >= 0.06
-    `D64::Disk::Image` >= 0.01
+* `Array::Iterator` >= 0.06
+* `D64::Disk::Image` >= 0.01
 
 VERSION
 -------
 
-Version 0.02 (2011-01-13)
+Version 0.03 (2013-02-16)
 
 INSTALLATION
 ------------

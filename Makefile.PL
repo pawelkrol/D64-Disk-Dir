@@ -1,16 +1,15 @@
-#!/usr/bin/perl
-
 use ExtUtils::MakeMaker;
-
 WriteMakefile(
     NAME              => 'D64::Disk::Dir',
-    ABSTRACT          => 'Handling entire Commodore (D64/D71/D81) disk image directories in an object-oriented way',
-    VERSION_FROM      => 'lib/D64/Disk/Dir.pm',
-    PREREQ_PM         => { 'Array::Iterator'  => '0.06',
-                           'D64::Disk::Image' => '0.01',
+    VERSION_FROM      => 'Dir.pm',
+    PREREQ_PM         => { 'Array::Iterator'  => 0,
+                           'Capture::Tiny'    => 0,
+                           'D64::Disk::Image' => 0,
+                           'IO::Scalar'       => 0,
                          },
     ($] >= 5.005 ?
-      (AUTHOR         => 'Pawel Krol <pawelkrol@cpan.org>') : ()),
+      (ABSTRACT_FROM  => 'Dir.pm',
+       AUTHOR         => 'Pawel Krol <pawelkrol@cpan.org>') : ()),
     DEFINE            => '',
     OPTIMIZE          => '-O2',
 );

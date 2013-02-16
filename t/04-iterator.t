@@ -1,4 +1,6 @@
 #########################
+use strict;
+use warnings;
 use Test::More tests => 3;
 use D64::Disk::Dir;
 use D64::Disk::Image qw(:all);

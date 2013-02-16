@@ -1,11 +1,11 @@
 Changes
-MANIFEST
+Dir.pm
 Makefile.PL
+MANIFEST
 README
-lib/D64/Disk/Dir.pm
-lib/D64/Disk/Dir/Entry.pm
-lib/D64/Disk/Dir/Iterator.pm
 t/01-basic.t
 t/02-dir.t
 t/03-entry.t
 t/04-iterator.t
+Dir/Entry.pm
+Dir/Iterator.pm
