@@ -1,0 +1,8 @@
+Revision history for Perl extension D64::Disk::Dir.
+
+0.02  2011-01-13
+    - fixed a typo in the NAME section of POD for D64::Disk::Dir::Iterator
+
+0.01  2011-01-09
+    - initial version (supports reading D64/D71/D81 disk image directories,
+      and accessing individual directory entries)
