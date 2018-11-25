@@ -1,7 +1,7 @@
 D64-Disk-Dir
 ============
 
-`D64::Disk::Dir` is a Perl module providing an abstraction layer above `D64::Disk::Image` module (Perl interface to Per Olofsson's "[diskimage.c](http://www.paradroid.net/diskimage/)", an ANSI C library for manipulating Commodore disk images written in C), enabling users to handle D64 disk image directories in a higher-level object-oriented way.
+`D64::Disk::Dir` is a Perl module providing an abstraction layer above `D64::Disk::Image` module (Perl interface to Per Olofsson's "[diskimage.c](https://paradroid.automac.se/diskimage/)", an ANSI C library for manipulating Commodore disk images written in C), enabling users to handle D64 disk image directories in a higher-level object-oriented way.
 
 PREREQUISITES
 -------------
@@ -27,7 +27,7 @@ To install this module type the following:
 DOCUMENTATION
 -------------
 
-A comprehensive module documentation is available on [CPAN](http://search.cpan.org/~pawelkrol/D64-Disk-Dir/lib/D64/Disk/Dir.pm).
+A comprehensive module documentation is available on [CPAN](https://metacpan.org/pod/D64::Disk::Dir).
 
 COPYRIGHT AND LICENCE
 ---------------------
