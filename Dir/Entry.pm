@@ -35,7 +35,7 @@ use bytes;
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Carp qw/carp croak verbose/;
 
@@ -406,7 +406,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.03 (2013-02-16)
+Version 0.04 (2018-11-25)
 
 =head1 COPYRIGHT AND LICENSE
 

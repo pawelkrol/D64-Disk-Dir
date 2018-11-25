@@ -7,12 +7,12 @@ PREREQUISITES
 -------------
 
 * `Array::Iterator` >= 0.06
-* `D64::Disk::Image` >= 0.01
+* `D64::Disk::Image` >= 0.03
 
 VERSION
 -------
 
-Version 0.03 (2013-02-16)
+Version 0.04 (2018-11-25)
 
 INSTALLATION
 ------------
