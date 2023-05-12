@@ -126,6 +126,6 @@ my $data = $d64DiskDirObj->get_file_data(2);
 my @data = map { chr ord $_ } split '', $data;
 $data = join '', @data[0..2];
 is($data, 'xyz', 'get_file_data - get binary file data from a directory entry');
-#free_test_image($d64, $filename);
+free_test_image($d64, $filename);
 }
 #########################
