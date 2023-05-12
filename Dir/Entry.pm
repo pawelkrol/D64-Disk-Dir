@@ -35,7 +35,7 @@ use bytes;
 use strict;
 use warnings;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Carp qw/carp croak verbose/;
 
@@ -366,26 +366,36 @@ sub get_bytes {
 
 Print entry details to any opened file handle (the standard output by default):
 
-  $entryObj->print_entry($fh);
+  $entryObj->print_entry($fh, { verbose => $verbose });
 
 This method is subsequently invoked for each single entry while printing an entire directory with D64::Disk::Dir module.
+
+C<verbose> defaults to false (changing it to true will additionally print out file's track and sector values).
 
 =cut
 
 sub print_entry {
-    my $self = shift;
-    my $fh = shift;
+    my ($self, $fh, $args) = @_;
     $fh = *STDOUT unless defined $fh;
+    $args = {} unless defined $args;
+    my $verbose = $args->{verbose};
     # Get detailed file information stored within this object instance:
     my $type = $self->get_type();
     my $closed = $self->get_closed() ? ord ' ' : ord '*';
     my $locked = $self->get_locked() ? ord '<' : ord ' ';
     my $size = $self->get_size();
+    my $track = sprintf '%2d', $self->get_track();
+    my $sector = sprintf '%2d', $self->get_sector();
     # Get filename convert to ASCII and add quotes:
     my $name = $self->get_name(1);
     my $quotename = sprintf "\"%s\"", $name;
     # Print directory entry:
-    printf $fh "%-4d  %-18s%c%s%c\n", $size, $quotename, $closed, $type, $locked;
+    if ($verbose) {
+      printf $fh "%-4d  %-18s%c%s%c %s %s\n", $size, $quotename, $closed, $type, $locked, $track, $sector;
+    }
+    else {
+      printf $fh "%-4d  %-18s%c%s%c\n", $size, $quotename, $closed, $type, $locked;
+    }
 }
 
 =head1 BUGS
@@ -406,7 +416,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.04 (2018-11-25)
+Version 0.05 (2023-05-12)
 
 =head1 COPYRIGHT AND LICENSE
 

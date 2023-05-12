@@ -59,9 +59,11 @@ $EXPORT_TAGS{'all'} = [];
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw();
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Carp qw/carp croak verbose/;
+use Data::Dumper;
+use IO::Scalar;
 
 use D64::Disk::Dir::Entry;
 use D64::Disk::Image qw(:all);
@@ -380,20 +382,44 @@ sub get_file_data {
 
 Print out the entire directory content to any opened file handle (the standard output by default):
 
-  $d64DiskDirObj->print_dir($fh);
+  $d64DiskDirObj->print_dir($fh, { verbose => $verbose });
+
+C<verbose> defaults to false (changing it to true will additionally print out all files' track, sector, and loading address values).
 
 =cut
 
 sub print_dir {
-    my $self = shift;
-    my $fh = shift;
+    my ($self, $fh, $args) = @_;
     $fh = *STDOUT unless defined $fh;
+    $args = {} unless defined $args;
+    my $verbose = $args->{verbose};
     $self->_check_dir_read();
     $self->_print_title($fh);
     my $num_entries = $self->num_entries();
     for (my $i = 0; $i < $num_entries; $i++) {
         my $entryObj = $self->get_entry($i);
-        $entryObj->print_entry($fh);
+        # Set up the loading address:
+        my $loading_address = '';
+        if ($verbose) {
+          # Get the actual file type:
+          my $type = $entryObj->get_type();
+          my $filetype = $file_type_constants{$type};
+          # Read the file data only for PRG files:
+          if ($filetype == T_PRG) {
+            # Compute the loading address:
+            my $data = $self->get_file_data($i);
+            my ($lo, $hi) = map { ord } split //, substr $data, 0, 2;
+            $loading_address = sprintf ' $%04x', $lo + $hi * 256;
+          }
+        }
+        my $print_fh = new IO::Scalar;
+        $entryObj->print_entry($print_fh, { verbose => $verbose });
+        my $entry_content = ${$print_fh->sref};
+        # Append the loading address to printed entry:
+        chomp $entry_content;
+        $entry_content .= $loading_address . "\n";
+        # Print entry to $fh:
+        print $fh $entry_content;
     }
     $self->_print_blocks_free($fh);
 }
@@ -448,7 +474,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.04 (2018-11-25)
+Version 0.05 (2023-05-12)
 
 =head1 COPYRIGHT AND LICENSE
 

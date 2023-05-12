@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Capture::Tiny qw(capture_stdout);
 use IO::Scalar;
-use Test::More tests => 11;
+use Test::More tests => 12;
 use D64::Disk::Image qw(:all);
 use File::Temp qw(tmpnam);
 #########################
@@ -75,6 +75,13 @@ free_test_image($d64, $filename);
 my ($d64, $d64DiskDirObj, $filename) = create_test_image();
 my $directory_content = capture_stdout { $d64DiskDirObj->print_dir(); };
 like($directory_content, qr/"1".*"2".*."3".*661/s, 'print_dir - printing out the entire directory content to standard output');
+free_test_image($d64, $filename);
+}
+#########################
+{
+my ($d64, $d64DiskDirObj, $filename) = create_test_image();
+my $directory_content = capture_stdout { $d64DiskDirObj->print_dir(undef, { verbose => 1 }); };
+like($directory_content, qr/"1".*1 10 \$6261.*"2".*1 11 \$6261.*."3".*1 12 \$7978.*661/s, 'print_dir - verbosely printing out the entire directory content to standard output');
 free_test_image($d64, $filename);
 }
 #########################
