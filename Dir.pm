@@ -213,7 +213,6 @@ sub _get_dir_info {
     # Get title and ID:
     my ($title, $id) = $d64DiskImageObj->title();
     $title = D64::Disk::Image->name_from_rawname($title);
-    $id = D64::Disk::Image->name_from_rawname($id);
     # Store directory details in a hash:
     $self->{'DIR_INFO'} = {
         'TITLE'       => $title,
@@ -266,7 +265,7 @@ sub get_title {
 
 =head2 get_id
 
-Get 2 character disk directory ID (PETSCII string):
+Get 5 character disk directory ID (PETSCII string):
 
   my $convert2ascii = 0;
   my $diskID = $d64DiskDirObj->get_id($convert2ascii);
@@ -432,7 +431,7 @@ sub _print_title {
     # Get disk ID converted to ASCII:
     my $id = $self->get_id(1);
     # Print title and disk ID:
-    printf $fh "0 \"%-16s\" %s\n", $title, $id;
+    printf $fh "0 \"%-16s\" %-5s\n", $title, $id;
 }
 
 sub _print_blocks_free {

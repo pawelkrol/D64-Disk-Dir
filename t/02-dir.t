@@ -15,7 +15,7 @@ BEGIN { use_ok('D64::Disk::Dir', qw(:all)) };
 sub create_test_image {
     my $filename = tmpnam() . '.d64';
     my $d64 = D64::Disk::Image->create_image($filename, D64);
-    my $rawname = $d64->rawname_from_name(' djgruby/oxyron ');
+    my $rawname = $d64->rawname_from_name('dj gruby / triad');
     my $rawid = $d64->rawname_from_name('10');
     my $numstatus = $d64->format($rawname, $rawid);
     # Write file named "1" with contents "abcde":
@@ -88,14 +88,14 @@ free_test_image($d64, $filename);
 {
 my ($d64, $d64DiskDirObj, $filename) = create_test_image();
 my $title = $d64DiskDirObj->get_title(1);
-is($title, ' DJGRUBY/OXYRON ', 'get_title - get disk directory title converted to ASCII string');
+is($title, 'DJ GRUBY / TRIAD', 'get_title - get disk directory title converted to ASCII string');
 free_test_image($d64, $filename);
 }
 #########################
 {
 my ($d64, $d64DiskDirObj, $filename) = create_test_image();
 my $id = $d64DiskDirObj->get_id(1);
-is($id, '10', 'get_id - get disk directory ID converted to ASCII string');
+is($id, '10 2a', 'get_id - get disk directory ID converted to ASCII string');
 free_test_image($d64, $filename);
 }
 #########################
@@ -126,6 +126,6 @@ my $data = $d64DiskDirObj->get_file_data(2);
 my @data = map { chr ord $_ } split '', $data;
 $data = join '', @data[0..2];
 is($data, 'xyz', 'get_file_data - get binary file data from a directory entry');
-free_test_image($d64, $filename);
+#free_test_image($d64, $filename);
 }
 #########################
