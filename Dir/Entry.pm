@@ -38,8 +38,10 @@ use warnings;
 our $VERSION = '0.05';
 
 use Carp qw/carp croak verbose/;
+use Data::Dumper;
 
 use D64::Disk::Image qw(:all);
+use D64::Disk::Dir;
 
 # File type names:
 our @file_types = qw/del seq prg usr rel cbm dir ???/;
@@ -190,6 +192,24 @@ sub get_type {
     return $file_type;
 }
 
+=head2 set_type
+
+Set the actual filetype:
+
+  my $type = T_DEL;
+  $entryObj->set_type($type);
+
+Sets the actual filetype as a symbollic type name, the possibilities here are: C<T_DEL>, C<T_SEQ>, C<T_PRG>, C<T_USR>, C<T_REL>, C<T_CBM>, and C<T_DIR>.
+
+=cut
+
+sub set_type {
+    my ($self, $type) = @_;
+    croak "An illegal file type: ${type}" unless grep { $type == $_ } values %D64::Disk::Dir::file_type_constants;
+    $self->{'DETAILS'}->{'TYPE'} = $type;
+    return $type;
+}
+
 =head2 get_closed
 
 Get "Closed" flag (when not set produces "*", or "splat" files):
@@ -204,6 +224,25 @@ sub get_closed {
     my $self = shift;
     my $closed = $self->{'DETAILS'}->{'CLOSED'};
     return $closed ? 1 : 0;
+}
+
+=head2 set_closed
+
+Set "Closed" flag:
+
+  $entryObj->set_closed(1);
+
+Clear "Closed" flag:
+
+  $entryObj->set_closed(0);
+
+=cut
+
+sub set_closed {
+    my ($self, $closed) = @_;
+    croak "An illegal closed flag: ${closed}" unless $closed == 0 || $closed == 1;
+    $self->{'DETAILS'}->{'CLOSED'} = $closed;
+    return $closed;
 }
 
 =head2 get_locked
@@ -416,7 +455,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.05 (2023-05-12)
+Version 0.05 (2023-05-13)
 
 =head1 COPYRIGHT AND LICENSE
 

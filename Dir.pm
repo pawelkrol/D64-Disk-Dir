@@ -405,10 +405,13 @@ sub print_dir {
           my $filetype = $file_type_constants{$type};
           # Read the file data only for PRG files:
           if ($filetype == T_PRG) {
-            # Compute the loading address:
-            my $data = $self->get_file_data($i);
-            my ($lo, $hi) = map { ord } split //, substr $data, 0, 2;
-            $loading_address = sprintf ' $%04x', $lo + $hi * 256;
+            # Do not attempt to read loading address of a non-closed file:
+            if ($entryObj->get_closed()) {
+              # Compute the loading address:
+              my $data = $self->get_file_data($i);
+              my ($lo, $hi) = map { ord } split //, substr $data, 0, 2;
+              $loading_address = sprintf ' $%04x', $lo + $hi * 256;
+            }
           }
         }
         my $print_fh = new IO::Scalar;
@@ -473,7 +476,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.05 (2023-05-12)
+Version 0.05 (2023-05-13)
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -81,7 +81,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.05 (2023-05-12)
+Version 0.05 (2023-05-13)
 
 =head1 COPYRIGHT AND LICENSE
 

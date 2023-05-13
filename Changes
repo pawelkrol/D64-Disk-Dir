@@ -1,6 +1,6 @@
 Revision history for Perl extension D64::Disk::Dir.
 
-0.05  2023-05-12
+0.05  2023-05-13
     - add verbose mode of printing out disk directory content, which
       additionally includes file's track, sector, and loading address values
     - fixed an incomplete disk ID read from a disk directory (now getting all
