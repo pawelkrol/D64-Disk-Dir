@@ -11,6 +11,7 @@ WriteMakefile(
                            'File::Slurp'               => 0,
                            'File::Temp'                => 0,
                            'IO::Scalar'                => 0,
+                           'Term::ANSIColor'           => 5.01,
                          },
     ($] >= 5.005 ?
       (ABSTRACT_FROM  => 'Dir.pm',

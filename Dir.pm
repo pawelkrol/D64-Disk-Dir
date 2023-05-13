@@ -64,6 +64,7 @@ our $VERSION = '0.05';
 use Carp qw/carp croak verbose/;
 use Data::Dumper;
 use IO::Scalar;
+use Term::ANSIColor qw(:constants);
 
 use D64::Disk::Dir::Entry;
 use D64::Disk::Image qw(:all);
@@ -434,7 +435,10 @@ sub _print_title {
     # Get disk ID converted to ASCII:
     my $id = $self->get_id(1);
     # Print title and disk ID:
-    printf $fh "0 \"%-16s\" %-5s\n", $title, $id;
+    print $fh '0 ';
+    my $header_text = sprintf "\"%-16s\" %-5s", $title, $id;
+    print $fh REVERSE, $header_text, RESET;
+    print $fh "\n";
 }
 
 sub _print_blocks_free {
