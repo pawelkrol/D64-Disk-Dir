@@ -275,6 +275,20 @@ sub get_track {
     return $track;
 }
 
+=head2 set_track
+
+Set track location of first sector of file:
+
+  $entryObj->get_track($track);
+
+=cut
+
+sub set_track {
+    my ($self, $track) = @_;
+    $self->{'DETAILS'}->{'TRACK'} = $track;
+    return $track;
+}
+
 =head2 get_sector
 
 Get sector location of first sector of file:
@@ -286,6 +300,20 @@ Get sector location of first sector of file:
 sub get_sector {
     my $self = shift;
     my $sector = $self->{'DETAILS'}->{'SECTOR'};
+    return $sector;
+}
+
+=head2 set_sector
+
+Set sector location of first sector of file:
+
+  $entryObj->set_sector($sector);
+
+=cut
+
+sub set_sector {
+    my ($self, $sector) = @_;
+    $self->{'DETAILS'}->{'SECTOR'} = $sector;
     return $sector;
 }
 
@@ -455,7 +483,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.05 (2023-05-13)
+Version 0.05 (2023-05-14)
 
 =head1 COPYRIGHT AND LICENSE
 

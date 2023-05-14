@@ -1,7 +1,7 @@
 #########################
 use strict;
 use warnings;
-use Capture::Tiny qw(capture_stdout);
+use Capture::Tiny qw(capture_stdout capture_stderr);
 use D64::Disk::BAM;
 use D64::Disk::Image qw(:all);
 use D64::Disk::Layout::Sector;
@@ -10,7 +10,7 @@ use Data::Dumper;
 use File::Slurp;
 use File::Temp qw(tmpnam);
 use IO::Scalar;
-use Test::More tests => 13;
+use Test::More tests => 15;
 #########################
 {
 BEGIN { use_ok('D64::Disk::Dir', qw(:all)) };
@@ -200,6 +200,34 @@ my $data = $d64DiskDirObj->get_file_data(2);
 my @data = map { chr ord $_ } split '', $data;
 $data = join '', @data[0..2];
 is($data, 'xyz', 'get_file_data - get binary file data from a directory entry');
+free_test_image($d64, $filename);
+}
+#########################
+{
+my ($d64, $d64DiskDirObj, $filename) = create_test_image();
+# Set the initial track link to $00:
+{
+  # Get directory entry at the index 0:
+  my $entryObj = $d64DiskDirObj->get_entry(0);
+  # Set the initial track of the file:
+  $entryObj->set_track(0x00);
+}
+my $file_content = capture_stderr { my $data = $d64DiskDirObj->get_file_data(0); };
+like($file_content, qr/Unable to get file data from an illegal track/, 'get_file_data - get binary file data from a directory entry with an illegal initial track');
+free_test_image($d64, $filename);
+}
+#########################
+{
+my ($d64, $d64DiskDirObj, $filename) = create_test_image();
+# Set the initial sector link to $ff:
+{
+  # Get directory entry at the index 0:
+  my $entryObj = $d64DiskDirObj->get_entry(0);
+  # Set the initial sector of the file:
+  $entryObj->set_sector(0xff);
+}
+my $file_content = capture_stderr { my $data = $d64DiskDirObj->get_file_data(0); };
+like($file_content, qr/Unable to get file data from an illegal sector/, 'get_file_data - get binary file data from a directory entry with an illegal initial sector');
 free_test_image($d64, $filename);
 }
 #########################

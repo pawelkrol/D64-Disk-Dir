@@ -363,6 +363,22 @@ sub get_file_data {
         return undef;
     }
     my $d64DiskImageObj = $self->{'D64_DISK_IMAGE'};
+
+    # Validate initial track/sector:
+    my $track = $entryObj->get_track();
+    my $sector = $entryObj->get_sector();
+    my $imageType = $d64DiskImageObj->type();
+    my $tracks = $d64DiskImageObj->tracks($imageType);
+    if ($track < 1 || $track > $tracks) {
+        carp "Unable to get file data from an illegal track (validate first that initial track ${track} really exists on this disk!)";
+        return undef;
+    }
+    my $sectors_per_track = $d64DiskImageObj->sectors_per_track($imageType, $track);
+    if ($sector < 0 || $sector >= $sectors_per_track) {
+        carp "Unable to get file data from an illegal sector (validate first that initial sector ${sector} really exists on track ${track}!)";
+        return undef;
+    }
+
     # Get filename from the specified directory index position:
     my $name = $entryObj->get_name(0);
     my $rawname = D64::Disk::Image->rawname_from_name($name);
@@ -410,8 +426,10 @@ sub print_dir {
             if ($entryObj->get_closed()) {
               # Compute the loading address:
               my $data = $self->get_file_data($i);
-              my ($lo, $hi) = map { ord } split //, substr $data, 0, 2;
-              $loading_address = sprintf ' $%04x', $lo + $hi * 256;
+              if ($data) {
+                my ($lo, $hi) = map { ord } split //, substr $data, 0, 2;
+                $loading_address = sprintf ' $%04x', $lo + $hi * 256;
+              }
             }
           }
         }
@@ -480,7 +498,7 @@ Pawel Krol, E<lt>pawelkrol@cpan.orgE<gt>.
 
 =head1 VERSION
 
-Version 0.05 (2023-05-13)
+Version 0.05 (2023-05-14)
 
 =head1 COPYRIGHT AND LICENSE
 
