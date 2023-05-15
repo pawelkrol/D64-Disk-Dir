@@ -1,6 +1,8 @@
 D64-Disk-Dir
 ============
 
+[![CPAN version](https://badge.fury.io/pl/D64-Disk-Dir.png)](https://metacpan.org/pod/D64::Disk::Dir)
+
 `D64::Disk::Dir` is a Perl module providing an abstraction layer above `D64::Disk::Image` module (Perl interface to Per Olofsson's "[diskimage.c](https://paradroid.automac.se/diskimage/)", an ANSI C library for manipulating Commodore disk images written in C), enabling users to handle D64 disk image directories in a higher-level object-oriented way.
 
 PREREQUISITES
