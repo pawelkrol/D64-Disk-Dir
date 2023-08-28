@@ -14,7 +14,7 @@ PREREQUISITES
 VERSION
 -------
 
-Version 0.05 (2023-05-14)
+Version 0.06 (2023-08-28)
 
 INSTALLATION
 ------------
